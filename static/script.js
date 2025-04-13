@@ -138,14 +138,14 @@ function plotAllFormulas() {
                 const traces = validResults.flatMap(result => result.data);
                 const layout = {
                     ...validResults[0].layout,
-                    title: 'Multiple Functions Comparison',
-                    showlegend: true
+                    title: validResults.length > 1 ? 'Multiple Functions Comparison' : `3D Plot of ${formulas[0]}`,
+                    showlegend: validResults.length > 1
                 };
                 
                 // 为每个曲面添加名称
                 traces.forEach((trace, index) => {
-                    trace.name = `Function ${index + 1}: ${formulas[index]}`;
-                    trace.showscale = false; // 隐藏每个曲面的颜色条
+                    trace.name = validResults.length > 1 ? `Function ${index + 1}: ${formulas[index]}` : formulas[index];
+                    trace.showscale = validResults.length === 1; // 只有单个函数时显示颜色条
                 });
                 
                 Plotly.newPlot('plot', traces, layout);
