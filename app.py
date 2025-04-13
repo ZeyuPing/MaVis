@@ -37,9 +37,9 @@ def create_3d_plot(formula, x_range=(-5, 5), y_range=(-5, 5), points=50, color_s
         # 更新布局
         layout_settings = {
             'scene': {
-                'xaxis': {'title': 'X', 'autorange': True},
-                'yaxis': {'title': 'Y', 'autorange': True},
-                'zaxis': {'title': 'Z', 'autorange': True}
+                'xaxis': {'title': 'X'},
+                'yaxis': {'title': 'Y'},
+                'zaxis': {'title': 'Z'}
             },
             'title': f'3D Plot of {formula}'
         }
@@ -52,8 +52,6 @@ def create_3d_plot(formula, x_range=(-5, 5), y_range=(-5, 5), points=50, color_s
                 'dragmode': 'turntable',
                 'xaxis': {
                     'title': 'X',
-                    'autorange': True,
-                    'fixedrange': False,
                     'showspikes': False,
                     'spikesides': False,
                     'showbackground': True,
@@ -61,8 +59,6 @@ def create_3d_plot(formula, x_range=(-5, 5), y_range=(-5, 5), points=50, color_s
                 },
                 'yaxis': {
                     'title': 'Y',
-                    'autorange': True,
-                    'fixedrange': False,
                     'showspikes': False,
                     'spikesides': False,
                     'showbackground': True,
@@ -70,8 +66,6 @@ def create_3d_plot(formula, x_range=(-5, 5), y_range=(-5, 5), points=50, color_s
                 },
                 'zaxis': {
                     'title': 'Z',
-                    'autorange': True,
-                    'fixedrange': False,
                     'showspikes': False,
                     'spikesides': False,
                     'showbackground': True,
