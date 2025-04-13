@@ -1,16 +1,47 @@
 // 保存当前公式用于比较
 let currentFormula = '';
 
+// 添加新的公式输入框
+function addFormulaInput() {
+    const container = document.querySelector('.formula-inputs-container');
+    const inputDiv = document.createElement('div');
+    inputDiv.className = 'formula-input';
+    inputDiv.innerHTML = `
+        <div class="input-wrapper">
+            <input type="text" class="formula-field" placeholder="Enter a mathematical formula (e.g. x**2 + y**2)">
+            <button class="help-button" onclick="showHelp()">?</button>
+        </div>
+        <button class="remove-formula-btn" onclick="removeFormulaInput(this)">×</button>
+    `;
+    
+    // 将新输入框添加到"添加"按钮之前
+    const addButton = container.querySelector('.add-formula-btn');
+    container.insertBefore(inputDiv, addButton);
+}
+
+// 移除公式输入框
+function removeFormulaInput(button) {
+    const inputDiv = button.parentElement;
+    inputDiv.remove();
+}
+
+// 获取所有公式
+function getAllFormulas() {
+    return Array.from(document.querySelectorAll('.formula-field')).map(input => input.value).filter(formula => formula.trim() !== '');
+}
+
 // 初始化帮助对话框
 function initHelpModal() {
     const modal = document.getElementById('helpModal');
-    const helpBtn = document.getElementById('helpButton');
+    const helpBtns = document.getElementsByClassName('help-button');
     const closeBtn = document.getElementsByClassName('close')[0];
 
-    // 点击问号按钮打开对话框
-    helpBtn.onclick = function() {
-        modal.style.display = 'block';
-    }
+    // 为所有帮助按钮添加点击事件
+    Array.from(helpBtns).forEach(btn => {
+        btn.onclick = function() {
+            modal.style.display = 'block';
+        }
+    });
 
     // 点击 × 关闭对话框
     closeBtn.onclick = function() {
@@ -23,6 +54,12 @@ function initHelpModal() {
             modal.style.display = 'none';
         }
     }
+}
+
+// 显示帮助对话框
+function showHelp() {
+    const modal = document.getElementById('helpModal');
+    modal.style.display = 'block';
 }
 
 // 获取图形设置参数
@@ -54,11 +91,11 @@ function validateSettings(settings) {
     return true;
 }
 
-// 绘制公式
-function plotFormula() {
-    const formula = document.getElementById('formula').value;
-    if (!formula) {
-        alert('请输入公式');
+// 绘制所有公式
+function plotAllFormulas() {
+    const formulas = getAllFormulas();
+    if (formulas.length === 0) {
+        alert('请至少输入一个公式');
         return;
     }
     
@@ -67,37 +104,46 @@ function plotFormula() {
         return;
     }
     
-    // 检查公式是否发生变化
-    const formulaChanged = formula !== currentFormula;
-    
-    fetch('/plot', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            formula: formula,
-            save_to_history: formulaChanged, // 只在公式改变时保存历史记录
-            ...settings
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (typeof data === 'string') {
-            // 如果返回的是错误信息
-            alert('错误: ' + data);
-        } else {
-            Plotly.newPlot('plot', data.data, data.layout);
-            if (formulaChanged) {
-                currentFormula = formula;
-                loadHistory(); // 只在公式改变时刷新历史记录
-            }
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('生成图形时出错，请检查公式格式');
+    // 创建带有多个公式的请求
+    const requests = formulas.map(formula => {
+        return fetch('/plot', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                formula: formula,
+                save_to_history: true,
+                ...settings
+            })
+        }).then(response => response.json());
     });
+    
+    // 等待所有请求完成
+    Promise.all(requests)
+        .then(results => {
+            const traces = results.flatMap((data, index) => {
+                if (typeof data === 'string') {
+                    alert(`公式 "${formulas[index]}" 错误: ${data}`);
+                    return [];
+                }
+                return data.data;
+            });
+            
+            if (traces.length > 0) {
+                // 合并所有图形的数据
+                const layout = {
+                    ...results[0].layout,
+                    title: '多函数对比图'
+                };
+                Plotly.newPlot('plot', traces, layout);
+                loadHistory();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('生成图形时出错');
+        });
 }
 
 // 加载历史记录
@@ -150,13 +196,25 @@ function deleteFormula(id) {
     });
 }
 
-// 设置公式
+// 设置公式（用于示例）
 function setFormula(formula) {
-    document.getElementById('formula').value = formula;
-    plotFormula();
+    // 如果没有空的输入框，就添加一个新的
+    const emptyInputs = Array.from(document.querySelectorAll('.formula-field')).filter(input => !input.value);
+    if (emptyInputs.length === 0) {
+        addFormulaInput();
+    }
+    
+    // 找到第一个空的输入框并设置公式
+    const inputs = document.querySelectorAll('.formula-field');
+    for (let input of inputs) {
+        if (!input.value) {
+            input.value = formula;
+            break;
+        }
+    }
 }
 
-// 页面加载时加载历史记录
+// 页面加载时的初始化
 document.addEventListener('DOMContentLoaded', () => {
     loadHistory();
     initHelpModal();
@@ -170,9 +228,8 @@ document.addEventListener('DOMContentLoaded', () => {
     settingInputs.forEach(id => {
         const element = document.getElementById(id);
         element.addEventListener('change', () => {
-            const formula = document.getElementById('formula').value;
-            if (formula) {
-                plotFormula();
+            if (getAllFormulas().length > 0) {
+                plotAllFormulas();
             }
         });
     });
@@ -181,6 +238,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // 为公式输入框添加回车键监听
 document.getElementById('formula').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
-        plotFormula();
+        plotAllFormulas();
     }
 });

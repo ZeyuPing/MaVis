@@ -367,3 +367,52 @@ h2 {
         margin-bottom: 0.5rem;
     }
 }
+
+.formula-inputs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.formula-input {
+    display: flex;
+    gap: 1rem;
+    position: relative;
+    align-items: center;
+}
+
+.formula-input .remove-formula-btn {
+    background: #dc3545;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.formula-input .remove-formula-btn:hover {
+    background: #c82333;
+}
+
+.add-formula-btn {
+    align-self: flex-start;
+    background: #28a745;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 16px;
+    font-size: 1.2rem;
+}
+
+.add-formula-btn:hover {
+    background: #218838;
+}
+
+.plot-all-btn {
+    align-self: stretch;
+    margin-top: 1rem;
+}

@@ -15,12 +15,15 @@
                     <h1>MaVis</h1>
                     <p class="subtitle">3D Mathematical Formula Visualization</p>
                 </div>
-                <div class="formula-input">
-                    <div class="input-wrapper">
-                        <input type="text" id="formula" placeholder="Enter a mathematical formula (e.g. x**2 + y**2)">
-                        <button class="help-button" id="helpButton">?</button>
+                <div class="formula-inputs-container">
+                    <div class="formula-input">
+                        <div class="input-wrapper">
+                            <input type="text" class="formula-field" placeholder="Enter a mathematical formula (e.g. x**2 + y**2)">
+                            <button class="help-button">?</button>
+                        </div>
                     </div>
-                    <button onclick="plotFormula()">Generate Graph</button>
+                    <button class="add-formula-btn" onclick="addFormulaInput()">+</button>
+                    <button class="plot-all-btn" onclick="plotAllFormulas()">Generate Graphs</button>
                 </div>
                 
                 <!-- 添加帮助对话框 -->
