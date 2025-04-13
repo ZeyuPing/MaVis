@@ -11,96 +11,6 @@
 - 内置常用公式示例
 - 响应式设计，适配各种设备
 
-## 技术栈
-
-- 后端：Flask (Python)
-- 前端：HTML5, CSS3, JavaScript
-- 数据可视化：Plotly.js
-- 数学计算：NumPy, SymPy
-- 数据存储：SQLite3
-
-## 安装步骤
-
-1. 克隆仓库：
-```bash
-git clone https://github.com/your-username/math_vis.git
-cd math_vis
-```
-
-2. 创建并激活虚拟环境（推荐）：
-```bash
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-# 或
-venv\Scripts\activate  # Windows
-```
-
-3. 安装依赖：
-```bash
-pip install -r requirements.txt
-```
-
-4. 运行应用：
-```bash
-python app.py
-```
-
-5. 访问应用：
-打开浏览器访问 http://localhost:5000
-
-## 依赖项
-
-- Flask==3.0.2
-- numpy==1.26.4
-- matplotlib==3.8.3
-- pandas==2.2.1
-- scipy==1.12.0
-- Pillow==10.2.0
-- plotly==5.19.0
-- sympy==1.12
-
-## API 接口说明
-
-### 1. 主页面
-- 路由：`GET /`
-- 功能：渲染主页面
-- 返回：HTML页面
-
-### 2. 生成3D图形
-- 路由：`POST /plot`
-- 功能：根据提供的公式生成3D图形数据
-- 请求体：
-  ```json
-  {
-    "formula": "数学公式字符串"
-  }
-  ```
-- 返回：Plotly图形JSON数据
-
-### 3. 获取历史记录
-- 路由：`GET /history`
-- 功能：获取所有已保存的公式记录
-- 返回：JSON格式的历史记录列表
-  ```json
-  [
-    {
-      "id": "记录ID",
-      "formula": "公式内容",
-      "created_at": "创建时间"
-    }
-  ]
-  ```
-
-### 4. 删除历史记录
-- 路由：`DELETE /delete/<formula_id>`
-- 功能：删除指定ID的公式记录
-- 返回：
-  ```json
-  {
-    "success": true
-  }
-  ```
-
 ## 快速开始
 
 1. 启动应用后，访问主页面
@@ -122,9 +32,63 @@ python app.py
   - `sin(x) + cos(y)`（波浪面）
   - `sqrt(x**2 + y**2)`（圆锥面）
 
-## 开发指南
+## 安装步骤
 
-### 项目结构
+1. 克隆仓库：
+```bash
+git clone https://github.com/ZeyuPing/MaVis.git
+cd math_vis
+```
+
+2. 创建并激活Conda环境：
+```bash
+# 安装Miniconda（如果尚未安装）
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+
+# 创建新的conda环境
+conda create -n math_vis python=3.10
+conda activate math_vis
+
+# 如果使用Windows，激活环境使用：
+# conda activate math_vis
+```
+
+3. 安装依赖：
+```bash
+pip install -r requirements.txt
+```
+
+4. 运行应用：
+```bash
+python app.py
+```
+
+5. 访问应用：
+打开浏览器访问 http://localhost:5000
+
+## 技术栈
+
+- 后端：Flask (Python)
+- 前端：HTML5, CSS3, JavaScript
+- 数据可视化：Plotly.js
+- 数学计算：NumPy, SymPy
+- 数据存储：SQLite3
+
+## 依赖项
+
+- Flask==3.0.2
+- numpy==1.26.4
+- matplotlib==3.8.3
+- pandas==2.2.1
+- scipy==1.12.0
+- Pillow==10.2.0
+- plotly==5.19.0
+- sympy==1.12
+
+--------------------- 以下内容面向开发者 ---------------------
+
+## 项目结构
 ```
 math_vis/
 ├── app.py              # Flask应用主文件
@@ -136,6 +100,69 @@ math_vis/
 └── templates/
     └── index.html     # 主页面模板
 ```
+
+## API 接口说明
+
+### 1. 主页面渲染 (index函数)
+- URL：`/`
+- HTTP方法：`GET`
+- 功能：渲染应用程序主页面
+- 实现函数：`app.py` 中的 `index()`
+- 返回：渲染后的 `index.html` 页面
+
+### 2. 生成3D图形 (plot函数)
+- URL：`/plot`
+- HTTP方法：`POST`
+- 功能：根据提供的公式生成3D图形数据
+- 实现函数：`app.py` 中的 `plot()`
+- 请求体：
+  ```json
+  {
+    "formula": "数学公式字符串"
+  }
+  ```
+- 处理流程：
+  1. 接收前端发送的公式
+  2. 调用 `create_3d_plot()` 生成图形数据
+  3. 将图形数据转换为Plotly格式
+- 返回：JSON格式的Plotly图形数据
+
+### 3. 获取历史记录 (get_history函数)
+- URL：`/history`
+- HTTP方法：`GET`
+- 功能：获取所有已保存的公式记录
+- 实现函数：`app.py` 中的 `get_history()`
+- 处理流程：
+  1. 查询SQLite数据库中的历史记录
+  2. 将记录转换为JSON格式
+- 返回：
+  ```json
+  [
+    {
+      "id": "记录ID",
+      "formula": "公式内容",
+      "created_at": "创建时间"
+    }
+  ]
+  ```
+
+### 4. 删除历史记录 (delete_formula函数)
+- URL：`/delete/<formula_id>`
+- HTTP方法：`DELETE`
+- 功能：删除指定ID的公式记录
+- 实现函数：`app.py` 中的 `delete_formula(formula_id)`
+- 处理流程：
+  1. 接收要删除的记录ID
+  2. 从数据库中删除对应记录
+- 返回：
+  ```json
+  {
+    "success": true,
+    "message": "记录删除成功"
+  }
+  ```
+
+## 开发指南
 
 ### 添加新功能
 
