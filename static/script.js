@@ -280,15 +280,60 @@ function setFormula(formula) {
     }
 }
 
+// 初始化全屏显示功能
+function initFullscreenView() {
+    const fullscreenBtn = document.getElementById('fullscreen-btn');
+    const modal = document.getElementById('fullscreenModal');
+    const closeBtn = document.querySelector('.close-fullscreen');
+    
+    fullscreenBtn.onclick = function() {
+        modal.style.display = 'block';
+        // 获取当前图表的数据并在全屏模式下重新绘制
+        const currentPlot = document.getElementById('plot');
+        if (currentPlot && currentPlot.data) {
+            const data = currentPlot.data;
+            const layout = {
+                ...currentPlot.layout,
+                height: document.getElementById('fullscreenPlot').clientHeight,
+                width: document.getElementById('fullscreenPlot').clientWidth,
+                title: currentPlot.layout.title
+            };
+            Plotly.newPlot('fullscreenPlot', data, layout);
+        }
+    }
+    
+    closeBtn.onclick = function() {
+        modal.style.display = 'none';
+    }
+    
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+}
+
+// 调整全屏图表大小
+function resizeFullscreenPlot() {
+    const fullscreenPlot = document.getElementById('fullscreenPlot');
+    if (fullscreenPlot && fullscreenPlot.data) {
+        Plotly.resize(fullscreenPlot);
+    }
+}
+
+// 添加窗口大小变化监听
+window.addEventListener('resize', resizeFullscreenPlot);
+
 // 页面加载时的初始化
 document.addEventListener('DOMContentLoaded', () => {
     loadHistory();
     initHelpModal();
+    initFullscreenView();
     
     // 添加参数变化时自动更新图形的监听器
     const settingInputs = [
         'x_min', 'x_max', 'y_min', 'y_max',
-        'points', 'color_scale'
+        'points', 'color_scale', 'display_mode'
     ];
     
     settingInputs.forEach(id => {

@@ -130,11 +130,24 @@
                                 <option value="separate">Show Each Function Separately</option>
                             </select>
                         </div>
+                        <div class="input-group">
+                            <button id="fullscreen-btn" class="fullscreen-button">
+                                <span>Fullscreen View</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div id="plot" class="plot-container"></div>
+            
+            <!-- 添加全屏模态框 -->
+            <div id="fullscreenModal" class="fullscreen-modal">
+                <div class="fullscreen-content">
+                    <span class="close-fullscreen">&times;</span>
+                    <div id="fullscreenPlot"></div>
+                </div>
+            </div>
             
             <div class="history-section">
                 <h2>History</h2>
