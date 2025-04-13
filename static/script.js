@@ -70,22 +70,23 @@ function getPlotSettings() {
         y_min: parseFloat(document.getElementById('y_min').value),
         y_max: parseFloat(document.getElementById('y_max').value),
         points: parseInt(document.getElementById('points').value),
-        color_scale: document.getElementById('color_scale').value
+        color_scale: document.getElementById('color_scale').value,
+        display_mode: document.getElementById('display_mode').value
     };
 }
 
 // 验证设置参数
 function validateSettings(settings) {
     if (settings.x_min >= settings.x_max) {
-        alert('X最小值必须小于最大值');
+        alert('X minimum value must be less than maximum value');
         return false;
     }
     if (settings.y_min >= settings.y_max) {
-        alert('Y最小值必须小于最大值');
+        alert('Y minimum value must be less than maximum value');
         return false;
     }
     if (settings.points < 10 || settings.points > 200) {
-        alert('点数必须在10到200之间');
+        alert('Resolution points must be between 10 and 200');
         return false;
     }
     return true;
@@ -95,7 +96,7 @@ function validateSettings(settings) {
 function plotAllFormulas() {
     const formulas = getAllFormulas();
     if (formulas.length === 0) {
-        alert('请至少输入一个公式');
+        alert('Please enter at least one formula');
         return;
     }
     
@@ -122,27 +123,92 @@ function plotAllFormulas() {
     // 等待所有请求完成
     Promise.all(requests)
         .then(results => {
-            const traces = results.flatMap((data, index) => {
+            const validResults = results.filter((data, index) => {
                 if (typeof data === 'string') {
-                    alert(`公式 "${formulas[index]}" 错误: ${data}`);
-                    return [];
+                    alert(`Formula "${formulas[index]}" error: ${data}`);
+                    return false;
                 }
-                return data.data;
+                return true;
             });
-            
-            if (traces.length > 0) {
-                // 合并所有图形的数据
+
+            if (validResults.length === 0) return;
+
+            if (settings.display_mode === 'combined') {
+                // 合并所有图形的数据到一个图表
+                const traces = validResults.flatMap(result => result.data);
                 const layout = {
-                    ...results[0].layout,
-                    title: '多函数对比图'
+                    ...validResults[0].layout,
+                    title: 'Multiple Functions Comparison',
+                    showlegend: true
                 };
+                
+                // 为每个曲面添加名称
+                traces.forEach((trace, index) => {
+                    trace.name = `Function ${index + 1}: ${formulas[index]}`;
+                    trace.showscale = false; // 隐藏每个曲面的颜色条
+                });
+                
                 Plotly.newPlot('plot', traces, layout);
-                loadHistory();
+            } else {
+                // 创建网格布局，每行显示2个图表
+                const plotsPerRow = 2;
+                const rows = Math.ceil(validResults.length / plotsPerRow);
+                const plotHeight = 400; // 每个图表的高度
+                
+                // 调整容器高度以容纳所有图表
+                document.getElementById('plot').style.height = `${rows * plotHeight}px`;
+                
+                // 创建子图布局
+                const layout = {
+                    grid: {
+                        rows: rows,
+                        columns: plotsPerRow,
+                        pattern: 'independent'
+                    },
+                    height: rows * plotHeight
+                };
+                
+                // 处理每个公式的数据
+                const plotData = [];
+                validResults.forEach((result, index) => {
+                    const row = Math.floor(index / plotsPerRow) + 1;
+                    const col = (index % plotsPerRow) + 1;
+                    
+                    // 复制数据并添加场景信息
+                    const trace = result.data[0];
+                    trace.scene = `scene${index + 1}`;
+                    plotData.push(trace);
+                    
+                    // 为每个子图添加布局设置
+                    layout[`scene${index + 1}`] = {
+                        domain: {
+                            row: row - 1,
+                            column: col - 1
+                        },
+                        xaxis: { title: 'X' },
+                        yaxis: { title: 'Y' },
+                        zaxis: { title: 'Z' }
+                    };
+                    
+                    // 添加标题
+                    layout[`annotations${index + 1}`] = [{
+                        text: `${formulas[index]}`,
+                        showarrow: false,
+                        x: 0.5,  // 居中
+                        y: 1.1,  // 标题位置
+                        xref: `scene${index + 1}.domain`,
+                        yref: `scene${index + 1}.domain`
+                    }];
+                });
+                
+                Plotly.newPlot('plot', plotData, layout);
             }
+            
+            loadHistory();
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('生成图形时出错');
+            alert('Error generating graphs');
         });
 }
 
@@ -173,7 +239,7 @@ function loadHistory() {
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('加载历史记录失败');
+            alert('Failed to load history');
         });
 }
 
@@ -187,12 +253,12 @@ function deleteFormula(id) {
         if (data.success) {
             loadHistory();
         } else {
-            alert('删除公式失败');
+            alert('Failed to delete formula');
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('删除公式失败');
+        alert('Failed to delete formula');
     });
 }
 
