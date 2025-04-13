@@ -2,7 +2,7 @@
 
 [简体中文](README.md) | English
 
-![Title](./title.png)
+![Title](./exsample_figs/title.png)
 
 A Flask-based web application that converts mathematical formulas into interactive 3D visualizations. Users can input multiple mathematical formulas, and the system will generate corresponding 3D graphs in real-time, with support for history management.
 
@@ -192,11 +192,14 @@ Open browser and visit http://localhost:5000
 ## Screenshots
 
 ### Single Function Visualization
-![Example](./exsample.png)
+![Example](./exsample_figs/exsample.png)
+
+### Multiple Functions Comparison
+![Multiple Functions](./exsample_figs/multi_function.png)
 
 ### Visualization Settings
 You can adjust various parameters through the settings panel:
-![Settings](./settings.png)
+![Settings](./exsample_figs/settings.png)
 
 --------------------- For Developers ---------------------
 
@@ -206,6 +209,11 @@ MaVis/
 ├── app.py              # Flask application main file
 ├── requirements.txt    # Project dependencies
 ├── formulas.db        # SQLite database file
+├── exsample_figs/     # Example images directory
+│   ├── exsample.png     # Single function example
+│   ├── multi_function.png # Multiple functions comparison
+│   ├── settings.png      # Settings panel
+│   └── title.png        # Title image
 ├── static/
 │   ├── script.js      # Frontend JavaScript
 │   └── style.css      # Stylesheet

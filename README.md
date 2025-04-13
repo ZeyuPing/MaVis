@@ -2,7 +2,7 @@
 
 简体中文 | [English](README_EN.md)
 
-![标题](./title.png)
+![标题](./exsample_figs/title.png)
 
 这是一个基于Flask的Web应用程序，可以将数学公式转换为交互式3D可视化图形。用户可以输入多个数学公式，系统会实时生成对应的3D图形，并支持历史记录管理。
 
@@ -23,11 +23,14 @@
 ## 效果展示
 
 ### 单函数可视化
-![示例](./exsample.png)
+![示例](./exsample_figs/exsample.png)
+
+### 多函数对比显示
+![多函数显示](./exsample_figs/multi_function.png)
 
 ### 可视化设置
 您可以通过设置面板调整各种参数：
-![设置](./settings.png)
+![设置](./exsample_figs/settings.png)
 
 ## 快速开始
 
@@ -206,6 +209,11 @@ MaVis/
 ├── app.py              # Flask应用主文件
 ├── requirements.txt    # 项目依赖
 ├── formulas.db        # SQLite数据库文件
+├── exsample_figs/     # 示例图片目录
+│   ├── exsample.png     # 单函数示例图
+│   ├── multi_function.png # 多函数对比图
+│   ├── settings.png      # 设置面板图
+│   └── title.png        # 标题图
 ├── static/
 │   ├── script.js      # 前端JavaScript
 │   └── style.css      # 样式表
