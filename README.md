@@ -1,4 +1,4 @@
-# Math Vis - 3D数学公式可视化工具
+# MaVis - 3D数学公式可视化工具
 
 简体中文 | [English](README_EN.md)
 
