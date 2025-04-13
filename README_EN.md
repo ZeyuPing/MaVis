@@ -26,13 +26,65 @@ A Flask-based web application that converts mathematical formulas into interacti
 
 ## Supported Mathematical Expressions
 
-- Basic operations: `+`, `-`, `*`, `/`, `**` (power)
-- Math functions: `sin()`, `cos()`, `tan()`, `sqrt()`, `exp()`, `log()`
-- Variables: `x`, `y` (formula must contain these two variables)
-- Examples:
-  - `x**2 + y**2` (Paraboloid)
-  - `sin(x) + cos(y)` (Wave surface)
-  - `sqrt(x**2 + y**2)` (Conical surface)
+### Input Format Requirements
+
+1. Variable Names
+   - Must use `x` and `y` as variable names
+   - Variable names are case-sensitive and must be lowercase
+   - Formula must contain both variables
+   - Other variable names (like a, b, z) are not supported
+
+2. Operators
+   - Addition: `+`
+   - Subtraction: `-`
+   - Multiplication: must use `*` (cannot be omitted, e.g., `2x` should be written as `2*x`)
+   - Division: `/`
+   - Power: `**` (e.g., x² should be written as `x**2`)
+   - Parentheses: `()` (for controlling operation precedence)
+
+3. Supported Mathematical Functions
+   - Trigonometric: `sin(x)`, `cos(x)`, `tan(x)`
+   - Inverse trigonometric: `asin(x)`, `acos(x)`, `atan(x)`
+   - Hyperbolic: `sinh(x)`, `cosh(x)`, `tanh(x)`
+   - Exponential and logarithmic: `exp(x)`, `log(x)` (natural logarithm), `log10(x)`
+   - Square root: `sqrt(x)`
+   - Absolute value: `abs(x)`
+
+4. Constants
+   - Decimal points: `0.5`, `2.0`, etc.
+   - Scientific notation: `1e-3`, `2e5`, etc.
+   - π: use `pi`
+   - Base of natural logarithm e: use `E`
+
+### Correct Formula Examples
+```
+x**2 + y**2                    # Paraboloid
+sin(x) + cos(y)                # Wave surface
+sqrt(x**2 + y**2)              # Conical surface
+exp(-((x**2 + y**2)/2))       # Gaussian bell
+sin(sqrt(x**2 + y**2))        # Ripple
+2*x**2 - 3*y**2               # Saddle
+pi*sin(x)*cos(y)              # Periodic waves
+log(x**2 + y**2 + 1)          # Logarithmic surface
+abs(x) + abs(y)               # Pyramid
+```
+
+### Common Errors and Corrections
+```
+Wrong                 Correct             Explanation
+2x + y              2*x + y             Multiplication must use *
+x^2 + y^2          x**2 + y**2         Power must use **
+X + Y              x + y               Variables must be lowercase
+sin x              sin(x)              Functions must use parentheses
+x²                 x**2                Must use ** for power
+z = x + y          x + y               Don't write z =
+```
+
+### Important Notes
+- Formula calculation range is [-5, 5] by default
+- Avoid undefined values in the calculation range (like division by zero)
+- Complex formulas may require longer processing time
+- System will return error messages if the formula is invalid
 
 ## Installation
 
