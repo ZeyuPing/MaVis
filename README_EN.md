@@ -2,6 +2,8 @@
 
 [简体中文](README.md) | English
 
+![Title](./title.png)
+
 A Flask-based web application that converts mathematical formulas into interactive 3D visualizations. Users can input multiple mathematical formulas, and the system will generate corresponding 3D graphs in real-time, with support for history management.
 
 ## Features
@@ -186,6 +188,15 @@ Open browser and visit http://localhost:5000
 - Pillow==10.2.0
 - plotly==5.19.0
 - sympy==1.12
+
+## Screenshots
+
+### Single Function Visualization
+![Example](./exsample.png)
+
+### Visualization Settings
+You can adjust various parameters through the settings panel:
+![Settings](./settings.png)
 
 --------------------- For Developers ---------------------
 
