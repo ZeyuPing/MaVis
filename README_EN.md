@@ -2,11 +2,16 @@
 
 [简体中文](README.md) | English
 
-A Flask-based web application that converts mathematical formulas into interactive 3D visualizations. Users can input mathematical formulas, and the system will generate corresponding 3D graphs in real-time, with support for history management.
+A Flask-based web application that converts mathematical formulas into interactive 3D visualizations. Users can input multiple mathematical formulas, and the system will generate corresponding 3D graphs in real-time, with support for history management.
 
 ## Features
 
 - Support for 3D visualization of any mathematical formula containing x and y variables
+- Multiple function input and comparison analysis
+  - Dynamically add multiple function input boxes
+  - Two display modes available:
+    - Show All Functions Together: Display all functions in the same 3D space for intuitive comparison
+    - Show Each Function Separately: Display each function in its own 3D space for detailed observation
 - Interactive 3D graphics with rotation, zoom, and pan capabilities
 - Formula history management
 - One-click reuse of historical formulas
@@ -17,9 +22,13 @@ A Flask-based web application that converts mathematical formulas into interacti
 
 1. After launching the application, visit the main page
 2. Enter a mathematical formula in the input box, e.g., `x**2 + y**2`
-3. Click the "Generate Graph" button or press Enter
-4. The 3D graph will be displayed below
-5. Use mouse controls:
+3. To add more formulas, click the "+" button to add new input boxes
+4. In Visualization Settings, choose your display mode:
+   - Show All Functions Together: All functions in one 3D space
+   - Show Each Function Separately: Each function in its own space
+5. Click the "Generate Graphs" button or press Enter
+6. The 3D graph(s) will be displayed below
+7. Use mouse controls:
    - Left-click drag: Rotate view
    - Right-click drag: Pan view
    - Scroll wheel: Zoom view
@@ -67,6 +76,13 @@ sin(sqrt(x**2 + y**2))        # Ripple
 pi*sin(x)*cos(y)              # Periodic waves
 log(x**2 + y**2 + 1)          # Logarithmic surface
 abs(x) + abs(y)               # Pyramid
+```
+
+### Multiple Function Comparison Examples
+```
+x**2 + y**2 and 2*x**2 + 2*y**2          # Compare paraboloids with different coefficients
+sin(x) + cos(y) and sin(2*x) + cos(2*y)  # Compare waves with different frequencies
+x**2 - y**2 and x**2 + y**2              # Compare saddle and paraboloid
 ```
 
 ### Common Errors and Corrections
