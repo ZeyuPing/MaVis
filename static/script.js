@@ -5,26 +5,28 @@ function loadHistory() {
         .then(data => {
             const historyList = document.getElementById('history-list');
             historyList.innerHTML = '';
-            
             data.forEach(item => {
                 const historyItem = document.createElement('div');
                 historyItem.className = 'history-item';
                 
-                const formula = document.createElement('div');
-                formula.className = 'history-formula';
-                formula.textContent = item.formula;
-                formula.onclick = () => setFormula(item.formula);
+                const formulaText = document.createElement('span');
+                formulaText.className = 'formula-text';
+                formulaText.textContent = item.formula;
+                formulaText.onclick = () => setFormula(item.formula);
                 
-                const deleteBtn = document.createElement('button');
-                deleteBtn.textContent = '删除';
-                deleteBtn.onclick = () => deleteFormula(item.id);
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick = () => deleteFormula(item.id);
                 
-                historyItem.appendChild(formula);
-                historyItem.appendChild(deleteBtn);
+                historyItem.appendChild(formulaText);
+                historyItem.appendChild(deleteButton);
                 historyList.appendChild(historyItem);
             });
         })
-        .catch(error => console.error('Error loading history:', error));
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error loading history');
+        });
 }
 
 // 设置公式
@@ -37,7 +39,7 @@ function setFormula(formula) {
 function plotFormula() {
     const formula = document.getElementById('formula').value;
     if (!formula) {
-        alert('请输入公式！');
+        alert('Please enter a formula');
         return;
     }
     
@@ -52,7 +54,7 @@ function plotFormula() {
     .then(data => {
         if (typeof data === 'string') {
             // 如果返回的是错误信息
-            alert('错误: ' + data);
+            alert('Error: ' + data);
         } else {
             Plotly.newPlot('plot', data.data, data.layout);
             loadHistory(); // 刷新历史记录
@@ -60,7 +62,7 @@ function plotFormula() {
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('发生错误，请检查控制台获取详细信息。');
+        alert('Error generating graph. Please check your formula.');
     });
 }
 
@@ -73,9 +75,14 @@ function deleteFormula(id) {
     .then(data => {
         if (data.success) {
             loadHistory(); // 刷新历史记录
+        } else {
+            alert('Error deleting formula');
         }
     })
-    .catch(error => console.error('Error deleting formula:', error));
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error deleting formula');
+    });
 }
 
 // 页面加载时加载历史记录

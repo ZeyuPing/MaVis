@@ -5,9 +5,11 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    line-height: 1.6;
-    background-color: #f5f5f5;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f7;
+    color: #333;
 }
 
 .container {
@@ -16,129 +18,175 @@ body {
     padding: 20px;
 }
 
-.input-section {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+.title-section {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 2rem 0;
 }
 
 h1 {
-    color: #333;
-    margin-bottom: 20px;
-    text-align: center;
+    font-size: 3.5rem;
+    margin: 0;
+    background: linear-gradient(45deg, #2196F3, #00BCD4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    letter-spacing: -1px;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    margin: 0.5rem 0;
+    font-weight: 300;
+}
+
+.input-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
 }
 
 .formula-input {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 input[type="text"] {
     flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #2196F3;
 }
 
 button {
-    padding: 10px 20px;
-    background-color: #007bff;
+    background: #2196F3;
     color: white;
     border: none;
-    border-radius: 4px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
     cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background: #1976D2;
 }
 
 .examples {
-    margin-bottom: 20px;
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
 }
 
 .examples p {
-    margin-bottom: 10px;
-    color: #666;
+    margin: 0 0 1rem 0;
+    font-weight: 500;
 }
 
 .examples ul {
     list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 .examples li {
-    padding: 8px 12px;
-    background-color: #f8f9fa;
-    border: 1px solid #ddd;
-    margin-bottom: 5px;
-    border-radius: 4px;
+    background: white;
+    padding: 0.8rem 1.2rem;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    border: 1px solid #e0e0e0;
+    transition: all 0.2s ease;
 }
 
 .examples li:hover {
-    background-color: #e9ecef;
+    background: #f0f7ff;
+    border-color: #2196F3;
 }
 
 .plot-container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    background: white;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
     min-height: 500px;
 }
 
 .history-section {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-.history-section h2 {
-    margin-bottom: 15px;
+h2 {
+    margin: 0 0 1rem 0;
     color: #333;
+    font-size: 1.5rem;
 }
 
 #history-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    display: grid;
+    gap: 1rem;
 }
 
 .history-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    background-color: #f8f9fa;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
 }
 
 .history-item button {
-    padding: 5px 10px;
-    background-color: #dc3545;
-    font-size: 14px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    background: #dc3545;
 }
 
 .history-item button:hover {
-    background-color: #c82333;
+    background: #c82333;
 }
 
-.history-formula {
+.formula-text {
     cursor: pointer;
-    flex: 1;
-    margin-right: 10px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
 }
 
-.history-formula:hover {
-    color: #007bff;
+.formula-text:hover {
+    background: #e9ecef;
+}
+
+@media (max-width: 768px) {
+    .formula-input {
+        flex-direction: column;
+    }
+    
+    .examples ul {
+        flex-direction: column;
+    }
+    
+    h1 {
+        font-size: 2.5rem;
+    }
 }

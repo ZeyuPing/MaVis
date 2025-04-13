@@ -1,32 +1,35 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D数学公式可视化</title>
+    <title>MaVis</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
     <div class="container">
         <div class="input-section">
-            <h1>3D数学公式可视化</h1>
+            <div class="title-section">
+                <h1>MaVis</h1>
+                <p class="subtitle">3D Mathematical Formula Visualization</p>
+            </div>
             <div class="formula-input">
-                <input type="text" id="formula" placeholder="输入数学公式 (例如: x**2 + y**2)">
-                <button onclick="plotFormula()">生成图形</button>
+                <input type="text" id="formula" placeholder="Enter a mathematical formula (e.g. x**2 + y**2)">
+                <button onclick="plotFormula()">Generate Graph</button>
             </div>
             <div class="examples">
-                <p>示例公式：</p>
+                <p>Example Formulas:</p>
                 <ul>
-                    <li onclick="setFormula('x**2 + y**2')">z = x² + y²（抛物面）</li>
-                    <li onclick="setFormula('sin(x) + cos(y)')">z = sin(x) + cos(y)（波浪面）</li>
-                    <li onclick="setFormula('sqrt(x**2 + y**2)')">z = √(x² + y²)（圆锥面）</li>
+                    <li onclick="setFormula('x**2 + y**2')">z = x² + y² (Paraboloid)</li>
+                    <li onclick="setFormula('sin(x) + cos(y)')">z = sin(x) + cos(y) (Wave Surface)</li>
+                    <li onclick="setFormula('sqrt(x**2 + y**2')">z = √(x² + y²) (Conical Surface)</li>
                 </ul>
             </div>
         </div>
         <div id="plot" class="plot-container"></div>
         <div class="history-section">
-            <h2>历史记录</h2>
+            <h2>History</h2>
             <div id="history-list"></div>
         </div>
     </div>
