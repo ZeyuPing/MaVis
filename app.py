@@ -7,7 +7,8 @@ import json
 
 app = Flask(__name__)
 
-def create_3d_plot(formula, x_range=(-5, 5), y_range=(-5, 5), points=50):
+def create_3d_plot(formula, x_range=(-5, 5), y_range=(-5, 5), points=50, color_scale='Viridis', 
+                  scene_camera=None, axis_fixed=True):
     x, y = symbols('x y')
     
     try:
@@ -26,15 +27,63 @@ def create_3d_plot(formula, x_range=(-5, 5), y_range=(-5, 5), points=50):
         z_mesh = f(x_mesh, y_mesh)
         
         # 创建3D图形
-        fig = go.Figure(data=[go.Surface(x=x_mesh, y=y_mesh, z=z_mesh)])
-        fig.update_layout(
-            scene = dict(
-                xaxis_title='X',
-                yaxis_title='Y',
-                zaxis_title='Z'
-            ),
-            title=f'3D Plot of {formula}'
-        )
+        fig = go.Figure(data=[go.Surface(
+            x=x_mesh, 
+            y=y_mesh, 
+            z=z_mesh,
+            colorscale=color_scale
+        )])
+        
+        # 更新布局
+        layout_settings = {
+            'scene': {
+                'xaxis': {'title': 'X', 'autorange': True},
+                'yaxis': {'title': 'Y', 'autorange': True},
+                'zaxis': {'title': 'Z', 'autorange': True}
+            },
+            'title': f'3D Plot of {formula}'
+        }
+        
+        # 设置固定坐标轴
+        if axis_fixed:
+            layout_settings['scene'].update({
+                'camera': {'up': {'x': 0, 'y': 0, 'z': 1}},
+                'aspectmode': 'cube',
+                'dragmode': 'turntable',
+                'xaxis': {
+                    'title': 'X',
+                    'autorange': True,
+                    'fixedrange': False,
+                    'showspikes': False,
+                    'spikesides': False,
+                    'showbackground': True,
+                    'backgroundcolor': 'white'
+                },
+                'yaxis': {
+                    'title': 'Y',
+                    'autorange': True,
+                    'fixedrange': False,
+                    'showspikes': False,
+                    'spikesides': False,
+                    'showbackground': True,
+                    'backgroundcolor': 'white'
+                },
+                'zaxis': {
+                    'title': 'Z',
+                    'autorange': True,
+                    'fixedrange': False,
+                    'showspikes': False,
+                    'spikesides': False,
+                    'showbackground': True,
+                    'backgroundcolor': 'white'
+                }
+            })
+        
+        # 如果提供了相机设置，则使用它
+        if scene_camera:
+            layout_settings['scene']['camera'] = scene_camera
+            
+        fig.update_layout(**layout_settings)
         
         return json.loads(fig.to_json())
     except Exception as e:
@@ -61,15 +110,40 @@ def plot():
     data = request.get_json()
     formula = data.get('formula')
     
-    # 保存公式到数据库
-    conn = sqlite3.connect('formulas.db')
-    c = conn.cursor()
-    c.execute('INSERT INTO formulas (formula) VALUES (?)', (formula,))
-    conn.commit()
-    conn.close()
+    # 获取可视化参数
+    x_range = (float(data.get('x_min', -5)), float(data.get('x_max', 5)))
+    y_range = (float(data.get('y_min', -5)), float(data.get('y_max', 5)))
+    points = int(data.get('points', 50))
+    color_scale = data.get('color_scale', 'Viridis')
+    axis_fixed = data.get('axis_fixed', True)
+    scene_camera = data.get('scene_camera', None)
     
     # 生成图形
-    plot_data = create_3d_plot(formula)
+    plot_data = create_3d_plot(
+        formula, 
+        x_range=x_range,
+        y_range=y_range,
+        points=points,
+        color_scale=color_scale,
+        scene_camera=scene_camera,
+        axis_fixed=axis_fixed
+    )
+
+    # 检查是否需要保存到历史记录
+    save_to_history = data.get('save_to_history', True)  # 新增参数
+    if save_to_history:
+        # 检查公式是否已存在
+        conn = sqlite3.connect('formulas.db')
+        c = conn.cursor()
+        c.execute('SELECT id FROM formulas WHERE formula = ?', (formula,))
+        existing = c.fetchone()
+        
+        # 只有当公式不存在时才保存
+        if not existing:
+            c.execute('INSERT INTO formulas (formula) VALUES (?)', (formula,))
+            conn.commit()
+        conn.close()
+    
     return jsonify(plot_data)
 
 @app.route('/history', methods=['GET'])

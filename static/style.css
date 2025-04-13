@@ -56,6 +56,13 @@ h1 {
     margin-bottom: 1.5rem;
 }
 
+.input-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
 input[type="text"] {
     flex: 1;
     padding: 12px 16px;
@@ -83,6 +90,29 @@ button {
 
 button:hover {
     background: #1976D2;
+}
+
+.help-button {
+    position: absolute;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border-radius: 12px;
+    background: #e0e0e0;
+    color: #666;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: help;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.help-button:hover {
+    background: #2196F3;
+    color: white;
 }
 
 .examples {
@@ -177,6 +207,144 @@ h2 {
     background: #e9ecef;
 }
 
+.settings-panel {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.settings-group {
+    margin-bottom: 1.5rem;
+}
+
+.settings-group:last-child {
+    margin-bottom: 0;
+}
+
+.settings-panel h2 {
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-size: 1.3rem;
+}
+
+.settings-panel h3 {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.range-inputs, .visual-inputs {
+    display: grid;
+    gap: 1rem;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.input-group label {
+    min-width: 120px;
+    color: #555;
+}
+
+.input-group input[type="number"] {
+    width: 80px;
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.input-group select {
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    background: white;
+    min-width: 120px;
+}
+
+.input-group input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+/* 模态对话框样式 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    position: relative;
+    background-color: white;
+    margin: 5% auto;
+    padding: 2rem;
+    width: 80%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #000;
+}
+
+.help-content {
+    margin-top: 1.5rem;
+}
+
+.help-content section {
+    margin-bottom: 1.5rem;
+}
+
+.help-content h4 {
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.help-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.help-content li {
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+
+.help-content code {
+    background: #f5f5f5;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9em;
+    color: #2196F3;
+}
+
+/* 响应式布局调整 */
 @media (max-width: 768px) {
     .formula-input {
         flex-direction: column;
@@ -188,5 +356,14 @@ h2 {
     
     h1 {
         font-size: 2.5rem;
+    }
+    
+    .input-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .input-group label {
+        margin-bottom: 0.5rem;
     }
 }
