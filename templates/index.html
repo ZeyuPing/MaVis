@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D数学公式可视化</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="input-section">
+            <h1>3D数学公式可视化</h1>
+            <div class="formula-input">
+                <input type="text" id="formula" placeholder="输入数学公式 (例如: x**2 + y**2)">
+                <button onclick="plotFormula()">生成图形</button>
+            </div>
+            <div class="examples">
+                <p>示例公式：</p>
+                <ul>
+                    <li onclick="setFormula('x**2 + y**2')">z = x² + y²（抛物面）</li>
+                    <li onclick="setFormula('sin(x) + cos(y)')">z = sin(x) + cos(y)（波浪面）</li>
+                    <li onclick="setFormula('sqrt(x**2 + y**2)')">z = √(x² + y²)（圆锥面）</li>
+                </ul>
+            </div>
+        </div>
+        <div id="plot" class="plot-container"></div>
+        <div class="history-section">
+            <h2>历史记录</h2>
+            <div id="history-list"></div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
