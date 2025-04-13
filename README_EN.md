@@ -1,4 +1,4 @@
-# Math Vis - 3D Mathematical Formula Visualization Tool
+# MaVis - 3D Mathematical Formula Visualization Tool
 
 [简体中文](README.md) | English
 
