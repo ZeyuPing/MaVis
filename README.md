@@ -37,34 +37,65 @@
 1. 克隆仓库：
 ```bash
 git clone https://github.com/ZeyuPing/MaVis.git
-cd math_vis
+cd MaVis
 ```
 
-2. 创建并激活Conda环境：
+2. 安装Miniconda（如果尚未安装）：
+
+对于 Windows：
+- 访问 [Miniconda官网](https://docs.conda.io/en/latest/miniconda.html)
+- 下载并运行 Windows 安装程序（.exe文件）
+- 按照安装向导完成安装
+
+对于 macOS：
 ```bash
-# 安装Miniconda（如果尚未安装）
+# Intel芯片
+brew install miniconda
+# 或使用curl下载安装脚本
+curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
+bash Miniconda3-latest-MacOSX-x86_64.sh
+
+# Apple Silicon (M1/M2)芯片
+curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh
+bash Miniconda3-latest-MacOSX-arm64.sh
+```
+
+对于 Linux：
+```bash
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
-
-# 创建新的conda环境
-conda create -n math_vis python=3.10
-conda activate math_vis
-
-# 如果使用Windows，激活环境使用：
-# conda activate math_vis
 ```
 
-3. 安装依赖：
+3. 创建并激活Conda环境：
+
+Windows：
+```bash
+# 打开Anaconda Prompt或PowerShell
+conda create -n mavis python=3.10
+conda activate mavis
+```
+
+macOS/Linux：
+```bash
+# 确保conda命令可用（可能需要重新打开终端）
+source ~/.bashrc  # Linux
+source ~/.zshrc   # macOS
+# 创建并激活环境
+conda create -n mavis python=3.10
+conda activate mavis
+```
+
+4. 安装依赖：
 ```bash
 pip install -r requirements.txt
 ```
 
-4. 运行应用：
+5. 运行应用：
 ```bash
 python app.py
 ```
 
-5. 访问应用：
+6. 访问应用：
 打开浏览器访问 http://localhost:5000
 
 ## 技术栈
@@ -90,7 +121,7 @@ python app.py
 
 ## 项目结构
 ```
-math_vis/
+MaVis/
 ├── app.py              # Flask应用主文件
 ├── requirements.txt    # 项目依赖
 ├── formulas.db        # SQLite数据库文件
