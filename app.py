@@ -7,8 +7,7 @@ import json
 
 app = Flask(__name__)
 
-def create_3d_plot(formula, x_range=(-5, 5), y_range=(-5, 5), points=50, color_scale='Viridis', 
-                  scene_camera=None, axis_fixed=True):
+def create_3d_plot(formula, x_range=(-5, 5), y_range=(-5, 5), points=50, color_scale='Viridis', scene_camera=None):
     x, y = symbols('x y')
     
     try:
@@ -43,35 +42,6 @@ def create_3d_plot(formula, x_range=(-5, 5), y_range=(-5, 5), points=50, color_s
             },
             'title': f'3D Plot of {formula}'
         }
-        
-        # 设置固定坐标轴
-        if axis_fixed:
-            layout_settings['scene'].update({
-                'camera': {'up': {'x': 0, 'y': 0, 'z': 1}},
-                'aspectmode': 'cube',
-                'dragmode': 'turntable',
-                'xaxis': {
-                    'title': 'X',
-                    'showspikes': False,
-                    'spikesides': False,
-                    'showbackground': True,
-                    'backgroundcolor': 'white'
-                },
-                'yaxis': {
-                    'title': 'Y',
-                    'showspikes': False,
-                    'spikesides': False,
-                    'showbackground': True,
-                    'backgroundcolor': 'white'
-                },
-                'zaxis': {
-                    'title': 'Z',
-                    'showspikes': False,
-                    'spikesides': False,
-                    'showbackground': True,
-                    'backgroundcolor': 'white'
-                }
-            })
         
         # 如果提供了相机设置，则使用它
         if scene_camera:
@@ -109,7 +79,6 @@ def plot():
     y_range = (float(data.get('y_min', -5)), float(data.get('y_max', 5)))
     points = int(data.get('points', 50))
     color_scale = data.get('color_scale', 'Viridis')
-    axis_fixed = data.get('axis_fixed', True)
     scene_camera = data.get('scene_camera', None)
     
     # 生成图形
@@ -119,20 +88,17 @@ def plot():
         y_range=y_range,
         points=points,
         color_scale=color_scale,
-        scene_camera=scene_camera,
-        axis_fixed=axis_fixed
+        scene_camera=scene_camera
     )
 
     # 检查是否需要保存到历史记录
-    save_to_history = data.get('save_to_history', True)  # 新增参数
+    save_to_history = data.get('save_to_history', True)
     if save_to_history:
-        # 检查公式是否已存在
         conn = sqlite3.connect('formulas.db')
         c = conn.cursor()
         c.execute('SELECT id FROM formulas WHERE formula = ?', (formula,))
         existing = c.fetchone()
         
-        # 只有当公式不存在时才保存
         if not existing:
             c.execute('INSERT INTO formulas (formula) VALUES (?)', (formula,))
             conn.commit()

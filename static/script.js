@@ -33,8 +33,7 @@ function getPlotSettings() {
         y_min: parseFloat(document.getElementById('y_min').value),
         y_max: parseFloat(document.getElementById('y_max').value),
         points: parseInt(document.getElementById('points').value),
-        color_scale: document.getElementById('color_scale').value,
-        axis_fixed: document.getElementById('axis_fixed').checked
+        color_scale: document.getElementById('color_scale').value
     };
 }
 
@@ -165,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 添加参数变化时自动更新图形的监听器
     const settingInputs = [
         'x_min', 'x_max', 'y_min', 'y_max',
-        'points', 'color_scale', 'axis_fixed'
+        'points', 'color_scale'
     ];
     
     settingInputs.forEach(id => {
